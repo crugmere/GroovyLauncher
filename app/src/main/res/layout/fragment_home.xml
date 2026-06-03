@@ -7,6 +7,10 @@
     android:animateLayoutChanges="true"
     android:orientation="vertical"
     tools:context=".ui.HomeFragment">
+    <app.groovylauncher.views.GroovyBackgroundView
+        android:id="@+id/groovyBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <!-- Placeholder layout for locking screen-->
     <FrameLayout
