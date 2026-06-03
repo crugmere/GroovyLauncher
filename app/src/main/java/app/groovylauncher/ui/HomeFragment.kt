@@ -176,7 +176,7 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
 
     private fun initObservers() {
         if (prefs.firstSettingsOpen) {
-            binding.firstRunTips.visibility = View.VISIBLE
+            binding.firstRunTips.visibility = View.GONE
             binding.setDefaultLauncher.visibility = View.GONE
         } else binding.firstRunTips.visibility = View.GONE
 

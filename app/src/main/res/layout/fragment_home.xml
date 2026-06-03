@@ -11,7 +11,17 @@
         android:id="@+id/groovyBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
+    <app.groovylauncher.views.VinylView
+        android:id="@+id/vinylView"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="120dp" />
+    <app.groovylauncher.views.MushroomView
+        android:id="@+id/mushroomView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="bottom" />
     <!-- Placeholder layout for locking screen-->
     <FrameLayout
         android:id="@+id/lock"
