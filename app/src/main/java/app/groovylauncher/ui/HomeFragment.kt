@@ -77,6 +77,7 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         setHomeAlignment(prefs.homeAlignment)
         initSwipeTouchListener()
         initClickListeners()
+
     }
 
     override fun onResume() {
@@ -85,6 +86,7 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         viewModel.isOlauncherDefault()
         if (prefs.showStatusBar) showStatusBar()
         else hideStatusBar()
+        binding.splashView?.show()  // add this line
     }
 
     override fun onClick(view: View) {

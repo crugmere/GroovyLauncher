@@ -20,7 +20,7 @@
     <app.groovylauncher.views.MushroomView
         android:id="@+id/mushroomView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         android:layout_gravity="bottom" />
     <!-- Placeholder layout for locking screen-->
     <FrameLayout
@@ -52,23 +52,23 @@
             style="@style/TextDefault"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
+            android:fontFamily="@font/cinzel_decorative_regular"
             android:format12Hour="h:mm"
             android:textSize="@dimen/time_size"
+            android:textColor="#FFD700"
             tools:text="02:34" />
 
-        <TextView
-            android:id="@+id/date"
-            style="@style/TextDefault"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:format12Hour="EEE, dd MMM"
-            android:format24Hour="EEE, dd MMM"
-            android:paddingHorizontal="3dp"
-            android:textSize="@dimen/date_size"
-            tools:text="Thu, 30 Dec" />
-    </LinearLayout>
-
+    <TextView
+        android:id="@+id/date"
+        style="@style/TextDefault"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cinzel_decorative_regular"
+        android:paddingHorizontal="3dp"
+        android:textSize="@dimen/date_size"
+        android:textColor="#CC99FF"
+        android:letterSpacing="0.15"
+        tools:text="Thu, 30 Dec" />
     <!-- Screen time-->
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvScreenTime"
@@ -93,7 +93,7 @@
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingHorizontal="24dp"
-        android:paddingTop="112dp"
+        android:paddingTop="200dp"
         android:paddingBottom="48dp">
 
         <TextView
@@ -212,4 +212,10 @@
         android:maxLines="1"
         android:text="@string/set_as_default_launcher_u"
         android:visibility="gone" />
+    <app.groovylauncher.views.SplashView
+        android:id="@+id/splashView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+    </LinearLayout>
 </FrameLayout>

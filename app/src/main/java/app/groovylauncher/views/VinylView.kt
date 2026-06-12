@@ -40,10 +40,19 @@ class VinylView @JvmOverloads constructor(
         val t = (System.currentTimeMillis() - startTime) / 1000f
         val cx = width / 2f
         val cy = height / 2f
-        val radius = minOf(cx, cy) * 0.85f
+        val radius = minOf(cx, cy) * 0.92f
 
         canvas.save()
         canvas.rotate(t * 33f / 60f * 360f, cx, cy)
+
+        // Warp — squish and skew on a slow sine wave
+        val warpScale = 1f + sin(t * 1.8f) * 0.06f
+        val warpSkew = sin(t * 1.3f) * 0.04f
+        val matrix = Matrix()
+        matrix.setScale(warpScale, 1f / warpScale, cx, cy)
+        matrix.postSkew(warpSkew, warpSkew * 0.5f, cx, cy)
+        canvas.concat(matrix)
+
         drawRecord(canvas, cx, cy, radius, t)
         canvas.restore()
 
@@ -51,78 +60,105 @@ class VinylView @JvmOverloads constructor(
     }
 
     private fun drawRecord(canvas: Canvas, cx: Float, cy: Float, radius: Float, t: Float) {
-        // Main vinyl body
+        // Colour cycling body
+        val bodyHue = (t * 15f) % 360f
         paint.shader = null
-        paint.color = Color.argb(230, 15, 5, 25)
         paint.style = Paint.Style.FILL
+        paint.color = Color.HSVToColor(230, floatArrayOf(bodyHue, 0.6f, 0.15f))
         canvas.drawCircle(cx, cy, radius, paint)
 
-        // Grooves with subtle rainbow hue shift
+        // Vinyl sheen
+        val sheenGradient = RadialGradient(
+            cx - radius * 0.2f, cy - radius * 0.2f, radius * 1.4f,
+            intArrayOf(
+                Color.argb(40, 80, 0, 120),
+                Color.argb(15, 40, 0, 80),
+                Color.TRANSPARENT
+            ),
+            floatArrayOf(0f, 0.5f, 1f),
+            Shader.TileMode.CLAMP
+        )
+        paint.shader = sheenGradient
+        canvas.drawCircle(cx, cy, radius, paint)
+        paint.shader = null
+
+        // Grooves
         paint.style = Paint.Style.STROKE
-        val grooveCount = 28
+        val grooveCount = 40
         for (i in 0..grooveCount) {
             val fraction = i / grooveCount.toFloat()
-            val grooveRadius = radius * (0.28f + fraction * 0.68f)
-            val hue = (fraction * 120f + t * 15f) % 360f
-            paint.color = Color.HSVToColor(30, floatArrayOf(hue, 0.6f, 0.7f))
-            paint.strokeWidth = 1.2f
+            val grooveRadius = radius * (0.30f + fraction * 0.62f)
+            if (i % 2 == 0) {
+                paint.color = Color.argb(25, 180, 100, 255)
+                paint.strokeWidth = 1.5f
+            } else {
+                paint.color = Color.argb(12, 0, 0, 0)
+                paint.strokeWidth = 0.8f
+            }
             canvas.drawCircle(cx, cy, grooveRadius, paint)
         }
 
-        // Ornamental spoke ring (Fillmore poster style)
+        // Spoke ring
         paint.style = Paint.Style.STROKE
-        paint.strokeWidth = 2f
-        val spokeRingRadius = radius * 0.75f
-        val spokeCount = 24
+        paint.strokeWidth = 1.5f
+        val spokeRingRadius = radius * 0.72f
+        val spokeCount = 36
         for (i in 0 until spokeCount) {
             val angle = (i * 360f / spokeCount) * PI.toFloat() / 180f
-            val innerR = radius * 0.28f
-            val outerR = spokeRingRadius
-            paint.color = Color.argb(60, 255, 215, 0)
+            val innerR = radius * 0.30f
+            paint.color = Color.argb(45, 255, 200, 0)
             canvas.drawLine(
-                cx + cos(angle) * innerR,
-                cy + sin(angle) * innerR,
-                cx + cos(angle) * outerR,
-                cy + sin(angle) * outerR,
+                cx + cos(angle) * innerR, cy + sin(angle) * innerR,
+                cx + cos(angle) * spokeRingRadius, cy + sin(angle) * spokeRingRadius,
                 paint
             )
         }
 
-        // Spoke ring circle
         paint.style = Paint.Style.STROKE
-        paint.strokeWidth = 2.5f
-        paint.color = Color.argb(120, 255, 215, 0)
+        paint.strokeWidth = 2f
+        paint.color = Color.argb(100, 255, 200, 0)
         canvas.drawCircle(cx, cy, spokeRingRadius, paint)
-        canvas.drawCircle(cx, cy, radius * 0.28f, paint)
+        canvas.drawCircle(cx, cy, radius * 0.30f, paint)
 
-        // Outer edge glow
         paint.style = Paint.Style.STROKE
-        paint.strokeWidth = 4f
-        paint.color = Color.argb(80, 180, 0, 255)
+        paint.strokeWidth = 3f
+        paint.color = Color.argb(60, 150, 0, 220)
         canvas.drawCircle(cx, cy, radius, paint)
     }
 
     private fun drawLabel(canvas: Canvas, cx: Float, cy: Float, radius: Float, t: Float) {
-        // Cycling label colour
         val hue = (t * 25f) % 360f
         paint.shader = null
         paint.style = Paint.Style.FILL
-        paint.color = Color.HSVToColor(255, floatArrayOf(hue, 0.8f, 0.9f))
+        paint.color = Color.HSVToColor(255, floatArrayOf(hue, 0.85f, 0.75f))
         canvas.drawCircle(cx, cy, radius, paint)
 
-        // Label shine
         val shineGradient = RadialGradient(
-            cx - radius * 0.3f, cy - radius * 0.3f, radius * 0.8f,
-            intArrayOf(Color.argb(80, 255, 255, 255), Color.TRANSPARENT),
-            floatArrayOf(0f, 1f),
+            cx - radius * 0.25f, cy - radius * 0.35f, radius,
+            intArrayOf(
+                Color.argb(120, 255, 255, 255),
+                Color.argb(20, 255, 255, 255),
+                Color.TRANSPARENT
+            ),
+            floatArrayOf(0f, 0.4f, 1f),
             Shader.TileMode.CLAMP
         )
         paint.shader = shineGradient
         canvas.drawCircle(cx, cy, radius, paint)
         paint.shader = null
 
-        // Centre hole
-        paint.color = Color.argb(220, 10, 0, 20)
-        canvas.drawCircle(cx, cy, radius * 0.18f, paint)
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = 1.5f
+        paint.color = Color.argb(80, 255, 255, 255)
+        canvas.drawCircle(cx, cy, radius * 0.85f, paint)
+
+        paint.style = Paint.Style.FILL
+        paint.color = Color.rgb(8, 3, 14)
+        canvas.drawCircle(cx, cy, radius * 0.2f, paint)
+
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = 1f
+        paint.color = Color.argb(60, 255, 255, 255)
+        canvas.drawCircle(cx, cy, radius * 0.2f, paint)
     }
 }
