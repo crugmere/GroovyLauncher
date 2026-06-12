@@ -26,3 +26,11 @@
 - Fix layout — vinyl position, app names not overlapping
 - Begin SplashView with particle system
 - First 3 instruments: Cloud Guitar, Gold Top, Reverse Strat
+- Session 5:
+- Fixed splash centering: missing </LinearLayout> after date TextView in fragment_home.xml
+  had nested SplashView inside dateTimeLayout. Removed -height*0.1f hack from SplashView.kt.
+- App names: Cinzel Decorative + per-app palette colours + glow via applyGroovyStyle() in HomeFragment.
+- Added cloud guitar to splash rotation.
+- TODO: instrument PNGs not in GitHub repo — check .gitignore / git add.
+- TODO: Cloud Guitar shape may be protected IP (Prince estate) — review before Play Store.
+- NEXT: reverse strat + double neck images, app drawer styling, settings.

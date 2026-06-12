@@ -36,6 +36,7 @@ class SplashView @JvmOverloads constructor(
             app.groovylauncher.R.drawable.roland,
             app.groovylauncher.R.drawable.bass,
             app.groovylauncher.R.drawable.jaguar,
+            app.groovylauncher.R.drawable.cloud,
             app.groovylauncher.R.drawable.moss
         )
     }
@@ -117,7 +118,7 @@ class SplashView @JvmOverloads constructor(
         canvas.drawBitmap(
             bitmap,
             Rect(0, 0, bitmap.width, bitmap.height),
-            RectF(cx - bw / 2f, cy - bh / 2f + bob - height * 0.1f, cx + bw / 2f, cy + bh / 2f + bob - height * 0.1f),
+            RectF(cx - bw / 2f, cy - bh / 2f + bob, cx + bw / 2f, cy + bh / 2f + bob),
             paint
         )
         paint.alpha = 255

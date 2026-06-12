@@ -18,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
@@ -77,6 +78,7 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         setHomeAlignment(prefs.homeAlignment)
         initSwipeTouchListener()
         initClickListeners()
+        applyGroovyStyle()
 
     }
 
@@ -235,6 +237,28 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         binding.setDefaultLauncher.setOnLongClickListener(this)
         binding.tvScreenTime.setOnClickListener(this)
         binding.tvScreenTime.setOnLongClickListener(this)
+    }
+
+    private fun applyGroovyStyle() {
+        val cinzel = ResourcesCompat.getFont(requireContext(), R.font.cinzel_decorative_regular)
+        val palette = intArrayOf(
+            0xFFFFD700.toInt(), // molten gold
+            0xFFFF2EC4.toInt(), // hot magenta
+            0xFF9D4DFF.toInt(), // electric purple
+            0xFFADFF2F.toInt(), // acid green
+            0xFFFF7518.toInt(), // burnt orange
+            0xFF40E0D0.toInt(), // turquoise
+            0xFFFF4D6D.toInt(), // raspberry
+            0xFFFFB347.toInt()  // soft amber
+        )
+        listOf(
+            binding.homeApp1, binding.homeApp2, binding.homeApp3, binding.homeApp4,
+            binding.homeApp5, binding.homeApp6, binding.homeApp7, binding.homeApp8
+        ).forEachIndexed { i, tv ->
+            tv.typeface = cinzel
+            tv.setTextColor(palette[i % palette.size])
+            tv.setShadowLayer(14f, 0f, 0f, palette[i % palette.size]) // blacklight glow
+        }
     }
 
     private fun setHomeAlignment(horizontalGravity: Int = prefs.homeAlignment) {
